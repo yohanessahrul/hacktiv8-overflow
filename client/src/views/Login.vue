@@ -1,5 +1,6 @@
 <template>
   <div class="about">
+    <div class="container">
     <h1>Login Page</h1>
     <form>
       <div class="form-group">
@@ -12,6 +13,7 @@
       </div>
       <button type="submit" class="btn btn-primary" @click="login">Submit</button>
     </form>
+    </div>
   </div>
 </template>
 <script>

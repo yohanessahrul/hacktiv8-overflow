@@ -4,7 +4,7 @@
       <div style="margin-top: 20px;" class="row">
           <div class="col-md-4">
             <div class="image">
-              <img src="https://cdn5.vectorstock.com/i/thumb-large/05/18/male-avatar-profile-picture-employee-work-vector-17000518.jpg" alt="">
+              <img src="https://www.esparkinfo.com/wp-content/uploads/2016/08/default-avatar.png" alt="">
             </div>
           </div>
           <div class="col-md-8">
@@ -43,7 +43,7 @@
             </div>
           </div>
       </div>
-      <div class="row">
+      <!-- <div class="row"> -->
         <div class="list-question">
           <ul>
             <li v-for="(myquestion, index) in myquestions" :key="index">
@@ -67,7 +67,7 @@
             </li>
           </ul>
         </div>
-      </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -108,11 +108,13 @@ export default {
       $('#modalAddQuestion').modal('hide')
     },
     deleteQuestion (id, index) {
-      let payload = {
-        id: id,
-        index: index
+      if (confirm('Yakin mau hapus?')) {
+        let payload = {
+          id: id,
+          index: index
+        }
+        this.$store.dispatch('deleteQuestion', payload)
       }
-      this.$store.dispatch('deleteQuestion', payload)
     },
     goToDetailQuestion (payload) {
       console.log('ter-klik => ', payload._id)
@@ -123,13 +125,16 @@ export default {
 </script>
 
 <style scoped>
+.row {
+  background: orange; 
+}
 .image {
   width: 100%;
-  background: green;
+  /* background: green; */
 }
 .profile {
   width: 100%;
-  background: red;
+  /* background: red; */
 }
 .clear {
   clear: both;
@@ -148,9 +153,6 @@ export default {
   float: left;
   list-style: none;
   background: yellow;
-}
-.list-question > ul > li > h3 { 
-  display: table;
 }
 .btn-del {
   background: rgb(211, 211, 211) !important;
@@ -172,9 +174,10 @@ export default {
 @media only screen and (max-width: 600px) {
   .image {
     padding: 10px;
-    background: white !important;
+    /* background: white !important; */
   }
   .image > img {
+    padding: 10px;
     display: table;
     width: 70%;
     margin: 0 auto;
@@ -212,7 +215,7 @@ export default {
     margin-bottom: 8px;
   }
   .list-question > ul > li > h3 {
-    display: table;
+    /* back */
     padding: 10px;
     font-size: 18px;
     color: rgb(31, 31, 31);
@@ -249,10 +252,11 @@ export default {
 @media only screen and (min-width: 768px) {
   .image {
     /* padding: 10px; */
-    background: white !important;
+    /* background: white !important; */
   }
   .image > img {
-    border: thin solid rgb(184, 183, 183);
+    /* border: thin solid rgb(184, 183, 183); */
+    padding: 10px;
     display: table;
     width: 70%;
     margin: 0 auto;
@@ -260,7 +264,7 @@ export default {
   .profile {
     height: 100%;
     padding: 25px 10px 10px 10px;
-    background: rgb(250, 176, 64);
+    /* background: rgb(250, 176, 64); */
   }
   .profile > h1 {
     text-align: center;
@@ -279,6 +283,7 @@ export default {
     margin: 10px auto;
   }
   .list-question > ul {
+    /* background: red; */
     margin: 0px auto 0 auto;
     padding: 15px;
   }
@@ -289,7 +294,6 @@ export default {
     margin-bottom: 12px;
   }
   .list-question > ul > li > h3 {
-    display: table;
     padding: 15px;
     font-size:23px;
     color: rgb(29, 28, 28);
@@ -328,7 +332,7 @@ export default {
   .profile {
     height: 100%;
     padding: 50px 10px 10px 10px;
-    background: rgb(250, 176, 64);
+    /* background: rgb(250, 176, 64); */
   }
   .profile > h1 {
     text-align: center;

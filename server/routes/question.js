@@ -14,5 +14,6 @@ router.delete('/deletequestion/:id', controllerQuestions.deleteQuestion)
 router.post('/comment/:id', controllerQuestions.comment)
 router.get('/detailquestion/:id', controllerQuestions.detailquestion)
 router.get('/like/:id', controllerQuestions.like)
+router.get('/dislike/:id', controllerQuestions.dislike)
 
 module.exports = router

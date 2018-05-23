@@ -10,13 +10,10 @@
                     <div class="attribute">
                         <ul>
                             <li>
-                              <button @click="cek(index)">CEK</button>
-                            </li>
-                            <li>
                                 <button @click="like(index, question._id)">Like {{ question.like.length }} </button>
                             </li>
                             <li>
-                                <button @click="dislike(index)">Dislike {{ question.dislike.length }} </button>
+                                <button @click="dislike(index, question._id)">Dislike {{ question.dislike.length }} </button>
                             </li>
                             <li>
                                 <button @click="sendComment(index, question._id)" data-toggle="modal" data-target="#modalComment">Comments {{ question.comments.length }} </button>
@@ -33,7 +30,7 @@
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label for="exampleFormControlTextarea1">Komentar anda</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="comment"></textarea> komentari postingan ke- {{ indexCommentClick }}
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="comment"></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -63,7 +60,8 @@ export default {
       comment: '',
       indexCommentClick: '',
       idCommentClick: '',
-      avail: false
+      avail: false,
+      availDislike: false
     }
   },
   created () {
@@ -82,23 +80,14 @@ export default {
     ])
   },
   methods: {
-    cek (index) {
-      console.log(this.$store.state.questions[index].like)
-    },
     like (index, id) {
-
-      console.log(localStorage.getItem('id'))
       let currentLike = this.$store.state.questions[index].like
-      console.log(currentLike, 'tipe=', typeof currentLike)
-
       for (let i = 0; i < currentLike.length; i++) {
         if (currentLike[i] === localStorage.getItem('id')) {
           console.log('Data ada -', i + 1)
           this.avail = true
         }
       }
-
-      console.log('Status terbaru ',this.avail)
 
       if (this.avail === false) {
         let payload = {
@@ -109,13 +98,28 @@ export default {
       } else {
         alert('Anda sudah pernak Like !!!')
       }
-
     },
-    dislike (index) {
-      this.$store.dispatch('incDislike', index)
+    dislike (index, id) {
+      let currentDislike = this.$store.state.questions[index].dislike
+      for (let i = 0; i < currentDislike.length; i++) {
+        if (currentDislike[i] === localStorage.getItem('id')) {
+          console.log('Data ada -', i + 1)
+          this.availDislike = true
+        }
+      }
+
+      if (this.availDislike === false) {
+        let payload = {
+          id: id,
+          index: index
+        }
+        this.$store.dispatch('incDislike', payload)
+      } else {
+        alert('Anda sudah pernak Dislike !!!')
+      }
+      // this.$store.dispatch('incDislike', index)
     },
     sendComment (index, id) {
-      console.log('XXXX', index, id)
       this.indexCommentClick = index
       this.idCommentClick = id
       $('#modalComment').on('hidden.bs.modal')
@@ -126,8 +130,6 @@ export default {
         index: this.indexCommentClick,
         comment: this.comment
       }
-
-      console.log('EC => ', payload)
 
       this.$store.dispatch('sendComment', payload)
       this.comment = ''

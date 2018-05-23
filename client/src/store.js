@@ -42,13 +42,17 @@ export default new Vuex.Store({
         state.questions[payload.index].like.push(localStorage.getItem('id'))
       }
     },
-    incDislikeMUtation (state, index) {
-
+    incDislikeMUtation (state, payload) {
+      let countFind = 0
       state.questions.forEach((data, i) => {
-        if (index === i) {
-          state.questions[i].dislike += 1
+        if (payload.index === i) {
+          console.log('INDEX SAMA')
+          countFind += 1
         }
       })
+      if (countFind > 0) {
+        state.questions[payload.index].dislike.push(localStorage.getItem('id'))
+      }
     },
     sendCommentMutation (state, payload) {
       state.questions.forEach((data, i) => {
@@ -135,8 +139,19 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    incDislike ({commit}, index) {
-      commit('incDislikeMUtation', index)
+    incDislike ({commit}, payload) {
+      console.log('masuk ke store action')
+      axios.get(`http://localhost:3000/api/questions/dislike/${payload.id}`,{
+        headers: {token: localStorage.getItem('token')}
+      })
+        .then((response) => {
+          console.log('response dari axios sukses', response)
+          commit('incDislikeMUtation', payload)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      // commit('incDislikeMUtation', index)
     },
     sendComment ({commit}, payload) {
       console.log('masuk ke store ACTION', payload.id)

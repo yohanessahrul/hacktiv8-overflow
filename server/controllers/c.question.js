@@ -7,7 +7,7 @@ module.exports = {
     let decoded = jwt.verify(req.headers.token, 'secretkeys')
 
     var newQuestion = new Question({
-      title: req.body.title, 
+      title: req.body.title,
       q: req.body.question,
       author: decoded.id
     });
@@ -78,8 +78,6 @@ module.exports = {
   comment: function (req, res) {
     let decoded = jwt.verify(req.headers.token, 'secretkeys')
 
-    console.log('masuk controller ID = ', req.params.id)
-    console.log(req.body.comment)
     Question.findOne({
       _id: req.params.id
     }, function (err, response) {
@@ -93,9 +91,7 @@ module.exports = {
           fullname: decoded.fullname,
           comment: req.body.comment,
         }
-        console.log('ARRAY COMMENT ',response.comments)
         response.comments.push(objComment)
-        console.log('AFTER COMMENT ',response.comments)
 
         Question.findByIdAndUpdate({_id: req.params.id}, {$set: {comments: response.comments}}, function (err, success) {
           if (err) {
@@ -105,10 +101,8 @@ module.exports = {
               msg: 'Komentar berhasil',
               data: success
             })
-            console.log(success)
           }
         })
-
         console.log('===w=>', response, '<==W===')
 
       } else {
@@ -119,20 +113,30 @@ module.exports = {
     })
   },
   detailquestion: function (req, res) {
-    console.log('masuk ke controller')
     let decoded = jwt.verify(req.headers.token, 'secretkeys')
-    Question.findById({ _id: req.params.id }, function (err, response) {
-      if (err) {
-        res.status(500).json({
-          msg: 'Internal server error'
-        })
-      } else {
+    Question.findById({ _id: req.params.id }).populate('author')
+      .then((response) => {
         res.status(200).json({
           msg: 'Detail berhasil didapatkan',
           data: response
         })
-      }
-    })
+      })
+      .catch((err) => {
+        res.status(500).json({
+          msg: 'Internal server error'
+        })
+      })//, //function (err, response) {
+      // if (err) {
+      //   res.status(500).json({
+      //     msg: 'Internal server error'
+      //   })
+      // } else {
+      //   res.status(200).json({
+      //     msg: 'Detail berhasil didapatkan',
+      //     data: response
+      //   })
+      // }
+    // })
   },
   like: function (req, res) {
     let decoded = jwt.verify(req.headers.token, 'secretkeys')
@@ -144,10 +148,7 @@ module.exports = {
           msg: 'Data tidak ditemukan'
         })
       } else {
-        console.log('respon pencarian controller =', response)
         let like = response.like
-        console.log('like==', like)
-        console.log(decoded.id)
         let availID = 0
         like.forEach(dataLike => {
           if (dataLike === decoded.id) {
@@ -158,7 +159,6 @@ module.exports = {
         if (availID === 0) {
           like.push(decoded.id)
         }
-        console.log('after like ==', like)
 
         Question.findByIdAndUpdate({_id: req.params.id}, {$set: {like: response.like}}, function (err, success) {
           if (err) {
@@ -168,7 +168,43 @@ module.exports = {
               msg: 'Like berhasil',
               data: success
             })
-            console.log('XXX',success)
+          }
+        })
+      }
+    })
+  },
+  dislike: function (req, res) {
+    console.log('masuk ke store action ID ', req.params.id)
+    let decoded = jwt.verify(req.headers.token, 'secretkeys')
+    Question.findOne({
+      _id: req.params.id
+    }, function (err, response) {
+      if (err) {
+        res.status(400).json({
+          msg: 'Data tidak ditemukan'
+        })
+      } else {
+        console.log('response dislike'. response)
+        let dislike = response.dislike
+        let availID = 0
+        dislike.forEach(dataDislike => {
+          if (dataDislike === decoded.id) {
+            availID += 1
+          }
+        })
+
+        if (availID === 0) {
+          dislike.push(decoded.id)
+        }
+
+        Question.findByIdAndUpdate({_id: req.params.id}, {$set: {dislike: response.dislike}}, function (err, success) {
+          if (err) {
+            console.log(err)
+          } else {
+            res.status(200).json({
+              msg: 'Dislike berhasil',
+              data: success
+            })
           }
         })
       }
