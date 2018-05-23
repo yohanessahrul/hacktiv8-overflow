@@ -28,7 +28,7 @@ export default {
     login () {
       console.log('Login User')
       console.log(this.email, '=', this.password)
-      axios.post('http://localhost:3000/api/users/login', {
+      axios.post('http://35.198.199.127/api/users/login', {
         email: this.email,
         password: this.password
       })
@@ -37,6 +37,7 @@ export default {
           console.log('response login =>', data)
           this.$store.dispatch('setProfile', data)
           localStorage.setItem('token', data.token)
+          localStorage.setItem('id', data.id)
           this.$router.push('/personalpage')
         })
         .catch((err) => {

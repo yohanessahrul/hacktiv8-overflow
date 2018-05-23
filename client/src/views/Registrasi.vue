@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     registrasi () {
-      axios.post('http://localhost:3000/api/users/register', {
+      axios.post('http://35.198.199.127/api/users/register', {
         fullname: this.fullname,
         email: this.email,
         password: this.password

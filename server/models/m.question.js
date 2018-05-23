@@ -1,4 +1,6 @@
 var mongoose = require('mongoose')
+var User = require('./m.user.js')
+var Schema = mongoose.Schema
 
 var schema = new mongoose.Schema({
     title: String,
@@ -6,7 +8,7 @@ var schema = new mongoose.Schema({
     like: Array,
     dislike: Array,
     comments: Array,
-    author: String
+    author: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 },{
     timestamp: true
 }

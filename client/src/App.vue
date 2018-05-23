@@ -15,9 +15,6 @@
             <li class="nav-item">
               <a class="nav-link"><router-link to="/personalpage">Personal Page</router-link></a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link"><router-link to="/question">Question</router-link></a>
-            </li>
           </ul>
           <!-- <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -38,6 +35,8 @@
 </template>
 
 <script>
+const $ = window.$
+
 export default {
   data () {
     return {
@@ -54,6 +53,7 @@ export default {
     logout () {
       localStorage.removeItem('token')
       this.$router.push('/login')
+      $('.navbar-collapse').collapse('hide')
     }
   }
 }

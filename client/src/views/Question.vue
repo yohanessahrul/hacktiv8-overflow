@@ -14,7 +14,7 @@
                                 <button @click="dislike(index)">Dislike ({{ question.dislike }}) </button>
                             </li>
                             <li>
-                                <button @click="sendComment(index)" data-toggle="modal" data-target="#modalComment">Comments ({{ question.comments.length }}) </button>
+                                <button @click="sendComment(index, question._id)" data-toggle="modal" data-target="#modalComment">Comments ({{ question.comments.length }}) </button>
                                 <!-- Modal -->
                                 <div class="modal fade" id="modalComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -56,13 +56,15 @@ export default {
   data () {
     return {
       comment: '',
-      indexCommentClick: ''
+      indexCommentClick: '',
+      idClick: ''
     }
   },
   created () {
     if (!localStorage.getItem('token')) {
       this.$router.push('/login')
     }
+    $('.navbar-collapse').collapse('hide')
   },
   computed: {
     ...mapState([
@@ -76,11 +78,14 @@ export default {
     dislike (index) {
       this.$store.dispatch('incDislike', index)
     },
-    sendComment (index) {
+    sendComment (index, id) {
       this.indexCommentClick = index
+      this.idClick = id
     },
     executeComment () {
+      console.log(this.indexCommentClick)
       let payload = {
+        id: this.idClick,
         index: this.indexCommentClick,
         comment: this.comment
       }

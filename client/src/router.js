@@ -4,7 +4,8 @@ import Home from './views/Home.vue'
 import Registrasi from './views/Registrasi.vue'
 import Login from './views/Login.vue'
 import PersonalPage from './views/PersonalPage.vue'
-import Question from './views/Question.vue'
+// import Question from './views/Question.vue'
+import DetailQuestion from './views/DetailQuestion.vue'
 
 Vue.use(Router)
 
@@ -31,9 +32,9 @@ export default new Router({
       component: PersonalPage
     },
     {
-      path: '/question',
-      name: 'question',
-      component: Question
+      path: '/detailquestion/:id',
+      name: 'detailquestion',
+      component: DetailQuestion
     }
   ]
 })

@@ -30,8 +30,8 @@
                         <div class="form-group">
                           <label for="exampleFormControlTextarea1">Your Question</label>
                           <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="inputQuestion" placeholder="Your Question here..."></textarea>
-                          {{ inputQuestion }}
                         </div>
+                        <!-- <textarea id="mytextarea" @keyup="rekamKetik()"></textarea> -->
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -47,7 +47,8 @@
         <div class="list-question">
           <ul>
             <li v-for="(myquestion, index) in myquestions" :key="index">
-              <h3> {{ myquestion.title }} </h3>
+              <button class="btn-del" @click="deleteQuestion(myquestion._id, index)">X</button>
+              <h3 @click="goToDetailQuestion(myquestion)"> {{ myquestion.title }} </h3>
               <p> {{ myquestion.q }} </p>
               <div class="attribute">
                 <ul>
@@ -73,7 +74,7 @@
 
 <script>
 import { mapState } from 'vuex'
-// const $ = window.$
+const $ = window.$
 
 export default {
   data () {
@@ -83,6 +84,7 @@ export default {
     }
   },
   created () {
+    $('.navbar-collapse').collapse('hide') // tutup navbar menu
     if (!localStorage.getItem('token')) {
       this.$router.push('/login')
     }
@@ -103,6 +105,18 @@ export default {
       }
       this.$store.dispatch('saveQuestion', payload)
       console.log('create question functio !!!')
+      $('#modalAddQuestion').modal('hide')
+    },
+    deleteQuestion (id, index) {
+      let payload = {
+        id: id,
+        index: index
+      }
+      this.$store.dispatch('deleteQuestion', payload)
+    },
+    goToDetailQuestion (payload) {
+      console.log('ter-klik => ', payload._id)
+      this.$router.push({path: `/detailquestion/${payload._id}`})
     }
   }
 }
@@ -129,10 +143,25 @@ export default {
 }
 .list-question > ul > li {
   /* border: thin solid grey; */
+  position: relative;
   width: 100%;
   float: left;
   list-style: none;
   background: yellow;
+}
+.list-question > ul > li > h3 { 
+  display: table;
+}
+.btn-del {
+  background: rgb(211, 211, 211) !important;
+  border-radius: 5px;
+  color: white;
+  border: none;
+  padding: -3px;
+  font-size: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 .attribute > ul > li {
   padding: 10px;
@@ -175,12 +204,15 @@ export default {
     padding: 15px;
   }
   .list-question > ul > li {
+    position: relative;
     border: thin solid #dddddd;
-    background: rgb(242, 241, 241);
+    /* background: rgb(242, 241, 241); */
+    background: #e8e8e8;
     padding-bottom: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
   .list-question > ul > li > h3 {
+    display: table;
     padding: 10px;
     font-size: 18px;
     color: rgb(31, 31, 31);
@@ -257,6 +289,7 @@ export default {
     margin-bottom: 12px;
   }
   .list-question > ul > li > h3 {
+    display: table;
     padding: 15px;
     font-size:23px;
     color: rgb(29, 28, 28);

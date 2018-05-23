@@ -1,21 +1,25 @@
 <template>
     <div class="question">
-        <h1>Question</h1>
+        <!-- <h1>Question</h1> -->
+        <img width="100%;" src="http://octobergallery.com/wp-content/uploads/2012/10/bg-banner-art.jpg" alt="">
         <div class="list-question">
             <ul>
                 <li v-for="(question, index) in questions" :key="index">
-                    <h3> {{ question.title }} </h3>
+                    <h3 @click="goToDetailQuestion(question)"> {{ question.title }} </h3>
                     <p> {{ question.q }} </p>
                     <div class="attribute">
                         <ul>
                             <li>
-                                <button @click="like(index)">Like {{ question.like.length }} </button>
+                              <button @click="cek(index)">CEK</button>
+                            </li>
+                            <li>
+                                <button @click="like(index, question._id)">Like {{ question.like.length }} </button>
                             </li>
                             <li>
                                 <button @click="dislike(index)">Dislike {{ question.dislike.length }} </button>
                             </li>
                             <li>
-                                <button @click="sendComment(index)" data-toggle="modal" data-target="#modalComment">Comments {{ question.comments.length }} </button>
+                                <button @click="sendComment(index, question._id)" data-toggle="modal" data-target="#modalComment">Comments {{ question.comments.length }} </button>
                                 <!-- Modal -->
                                 <div class="modal fade" id="modalComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -57,38 +61,82 @@ export default {
   data () {
     return {
       comment: '',
-      indexCommentClick: ''
+      indexCommentClick: '',
+      idCommentClick: '',
+      avail: false
     }
   },
   created () {
     if (!localStorage.getItem('token')) {
       this.$router.push('/login')
     }
+    this.$store.dispatch('getProfile')
+    this.$store.dispatch('getAllQuestion')
+    // this.profileId = this.$store.state.profile._id
+    $('.navbar-collapse').collapse('hide')
   },
   computed: {
     ...mapState([
-      'questions'
+      'questions',
+      'profile'
     ])
   },
   methods: {
-    like (index) {
-      this.$store.dispatch('incLike', index)
+    cek (index) {
+      console.log(this.$store.state.questions[index].like)
+    },
+    like (index, id) {
+
+      console.log(localStorage.getItem('id'))
+      let currentLike = this.$store.state.questions[index].like
+      console.log(currentLike, 'tipe=', typeof currentLike)
+
+      for (let i = 0; i < currentLike.length; i++) {
+        if (currentLike[i] === localStorage.getItem('id')) {
+          console.log('Data ada -', i + 1)
+          this.avail = true
+        }
+      }
+
+      console.log('Status terbaru ',this.avail)
+
+      if (this.avail === false) {
+        let payload = {
+          id: id,
+          index: index
+        }
+        this.$store.dispatch('incLike', payload)
+      } else {
+        alert('Anda sudah pernak Like !!!')
+      }
+
     },
     dislike (index) {
       this.$store.dispatch('incDislike', index)
     },
-    sendComment (index) {
+    sendComment (index, id) {
+      console.log('XXXX', index, id)
       this.indexCommentClick = index
+      this.idCommentClick = id
+      $('#modalComment').on('hidden.bs.modal')
     },
     executeComment () {
       let payload = {
+        id: this.idCommentClick,
         index: this.indexCommentClick,
         comment: this.comment
       }
+
+      console.log('EC => ', payload)
+
       this.$store.dispatch('sendComment', payload)
       this.comment = ''
 
       $('#modalComment').modal('hide')
+    },
+    goToDetailQuestion (payload) {
+      console.log('ter-klik => ', payload._id)
+      this.$router.push({path: `/detailquestion/${payload._id}`})
     }
   }
 }
@@ -181,6 +229,7 @@ export default {
   .list-question > ul > li > p {
     margin-top: -10px;
     padding-left: 10px;
+    padding-right: 10px;
     font-size: 14px;
     color: rgb(72, 70, 70);
   }
