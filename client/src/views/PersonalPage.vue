@@ -126,7 +126,8 @@ export default {
 
 <style scoped>
 .row {
-  background: orange; 
+  background: orange;
+  margin: 0 15px; 
 }
 .image {
   width: 100%;

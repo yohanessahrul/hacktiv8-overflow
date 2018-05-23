@@ -2,50 +2,55 @@
     <div class="question">
         <!-- <h1>Question</h1> -->
         <img width="100%;" src="http://octobergallery.com/wp-content/uploads/2012/10/bg-banner-art.jpg" alt="">
-        <div class="list-question">
-            <ul>
-                <li v-for="(question, index) in questions" :key="index">
-                    <h3 @click="goToDetailQuestion(question)"> {{ question.title }} </h3>
-                    <p> {{ question.q }} </p>
-                    <div class="attribute">
-                        <ul>
-                            <li>
-                                <button @click="like(index, question._id)">Like {{ question.like.length }} </button>
-                            </li>
-                            <li>
-                                <button @click="dislike(index, question._id)">Dislike {{ question.dislike.length }} </button>
-                            </li>
-                            <li>
-                                <button @click="sendComment(index, question._id)" data-toggle="modal" data-target="#modalComment">Comments {{ question.comments.length }} </button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="modalComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">Komentari</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlTextarea1">Komentar anda</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="comment"></textarea>
+        <div class="container">
+          <div class="col-md-12">
+
+            <div class="list-question">
+                <ul>
+                    <li v-for="(question, index) in questions" :key="index">
+                        <h3 @click="goToDetailQuestion(question)"> {{ question.title }} </h3>
+                        <p> {{ question.q }} </p>
+                        <div class="attribute">
+                            <ul>
+                                <li>
+                                    <button @click="like(index, question._id)">Like {{ question.like.length }} </button>
+                                </li>
+                                <li>
+                                    <button @click="dislike(index, question._id)">Dislike {{ question.dislike.length }} </button>
+                                </li>
+                                <li>
+                                    <button @click="sendComment(index, question._id)" data-toggle="modal" data-target="#modalComment">Comments {{ question.comments.length }} </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modalComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">Komentari</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Komentar anda</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="comment"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" @click="executeComment">Save changes</button>
+                                        </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" @click="executeComment">Save changes</button>
                                     </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </li>
-                            <div class="clear"></div>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
+                                </li>
+                                <div class="clear"></div>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+          </div>
         </div>
     </div>
 </template>

@@ -82,7 +82,7 @@ export default new Vuex.Store({
         })
     },
     getAllQuestion ({commit}) {
-      axios.get('http://localhost:3000/api/questions/allquestion')
+      axios.get('http://35.198.199.127/api/questions/allquestion')
         .then((response) => {
           let data = response.data.data
           commit('getAllQuestionMutation', data)
@@ -117,7 +117,7 @@ export default new Vuex.Store({
         })
     },
     deleteQuestion ({commit}, payload) {
-      axios.delete(`http://localhost:3000/api/questions/deletequestion/${payload.id}`)
+      axios.delete(`http://35.198.199.127/api/questions/deletequestion/${payload.id}`)
         .then((response) => {
           let data = response.data.data
           console.log(data)
@@ -128,7 +128,7 @@ export default new Vuex.Store({
         })
     },
     incLike ({commit}, payload) {
-      axios.get(`http://localhost:3000/api/questions/like/${payload.id}`,{
+      axios.get(`http://35.198.199.127/api/questions/like/${payload.id}`,{
         headers: {token: localStorage.getItem('token')}
       })
         .then((response) => {
@@ -141,7 +141,7 @@ export default new Vuex.Store({
     },
     incDislike ({commit}, payload) {
       console.log('masuk ke store action')
-      axios.get(`http://localhost:3000/api/questions/dislike/${payload.id}`,{
+      axios.get(`http://35.198.199.127/api/questions/dislike/${payload.id}`,{
         headers: {token: localStorage.getItem('token')}
       })
         .then((response) => {
@@ -155,7 +155,7 @@ export default new Vuex.Store({
     },
     sendComment ({commit}, payload) {
       console.log('masuk ke store ACTION', payload.id)
-      axios.post(`http://localhost:3000/api/questions/comment/${payload.id}`,
+      axios.post(`http://35.198.199.127/api/questions/comment/${payload.id}`,
         {comment: payload.comment},
         { headers: {token: localStorage.getItem('token')} }
       )
@@ -166,7 +166,7 @@ export default new Vuex.Store({
     },
     getDetailQuestion ({commit}, id) {
       console.log('masuk ke store action dengan ID ==', id)
-      axios.get(`http://localhost:3000/api/questions/detailquestion/${id}`, {
+      axios.get(`http://35.198.199.127/api/questions/detailquestion/${id}`, {
         headers: { token: localStorage.getItem('token') }
       })
         .then((response) => {

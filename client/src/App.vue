@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div id="nav" v-if="showMenu">
       <nav class="navbar navbar-expand-lg navbar-inverse bg-dark">
         <a class="navbar-brand" href="#">Hacktiv Overflow</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,10 +40,18 @@ const $ = window.$
 export default {
   data () {
     return {
-      isLogin: false
+      isLogin: false,
+      showMenu: true
     }
   },
   name: 'app',
+  beforeCreate () {
+    let url = window.location.href.split('/')
+    let last = url[url.length - 1]
+    if (last === 'login') {
+      this.showMenu = false
+    }
+  },
   created () {
     if (localStorage.getItem('token')) {
       this.isLogin = true
